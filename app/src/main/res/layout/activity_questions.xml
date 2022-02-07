@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_pontos"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/white"
@@ -54,5 +55,108 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_pergunta_questao"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/quem_esse_participante"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_pontos" />
+
+    <TextView
+        android:id="@+id/tv_primeira_opcao"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/questions_background"
+        android:gravity="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_pergunta_questao"
+        tools:text="GILBERTO" />
+
+    <TextView
+        android:id="@+id/tv_segunda_opcao"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/questions_background"
+        android:gravity="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_primeira_opcao"
+        tools:text="ALEMÃO" />
+
+    <TextView
+        android:id="@+id/tv_terceira_opcao"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/questions_background"
+        android:gravity="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_segunda_opcao"
+        tools:text="RAFINHA" />
+
+    <TextView
+        android:id="@+id/tv_quarta_opcao"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/questions_background"
+        android:gravity="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_terceira_opcao"
+        tools:text="ARTHUR" />
+
+    <Button
+        android:id="@+id/bt_dica"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="-40dp"
+        android:backgroundTint="@color/design_default_color_primary_dark"
+        android:text="DICA"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@id/bt_excluir_opcao"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_quarta_opcao" />
+
+    <Button
+        android:id="@+id/bt_excluir_opcao"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/design_default_color_primary_dark"
+        android:text="EXCLUIR \n OPÇÃO"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/bt_dica"
+        app:layout_constraintTop_toBottomOf="@id/tv_quarta_opcao" />
+
+    <Button
+        android:id="@+id/bt_responder"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bt_responder"
+        android:text="RESPONDER"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bt_dica" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

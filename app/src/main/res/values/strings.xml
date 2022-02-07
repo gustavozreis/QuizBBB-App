@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">QuizBBB</string>
+    <string name="quem_esse_participante">Qual é o nome desse participante?</string>
 </resources>

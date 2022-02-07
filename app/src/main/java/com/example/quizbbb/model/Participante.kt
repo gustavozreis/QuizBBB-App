@@ -5,5 +5,6 @@ data class Participante(
     val nome: String,
     val edicaoQueParticipou: String,
     val genero: String,
+    val foto: Int
 ) {
 }

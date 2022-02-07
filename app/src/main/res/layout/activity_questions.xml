@@ -9,6 +9,9 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/act_questions_background" />
 
     <ImageView
@@ -60,9 +63,10 @@
         android:id="@+id/tv_pergunta_questao"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:text="@string/quem_esse_participante"
         android:textColor="@color/white"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_pontos" />
@@ -127,7 +131,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="-40dp"
         android:backgroundTint="@color/design_default_color_primary_dark"
-        android:text="DICA"
+        android:text="@string/bt_dica_ano"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@id/bt_excluir_opcao"
         app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +144,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="30dp"
         android:backgroundTint="@color/design_default_color_primary_dark"
-        android:text="EXCLUIR \n OPÇÃO"
+        android:text="@string/bt_excluir_opcao"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/bt_dica"
@@ -149,10 +153,10 @@
     <Button
         android:id="@+id/bt_responder"
         android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/bt_responder"
-        android:text="RESPONDER"
+        android:text="@string/bt_responder"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,4 +4,7 @@
     <string name="bt_responder">RESPONDER</string>
     <string name="bt_excluir_opcao">EXCLUIR \n OPÇÃO</string>
     <string name="bt_dica_ano">DICA</string>
+    <string name="bt_comecar">Começar</string>
+    <string name="et_hint">Ex: Tadeu</string>
+    <string name="tv_frase_inicial">Insira seu nome para começar:</string>
 </resources>

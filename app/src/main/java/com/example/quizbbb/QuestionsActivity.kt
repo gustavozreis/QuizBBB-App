@@ -4,9 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.example.quizbbb.Data.Participantes
 import com.example.quizbbb.databinding.ActivityQuestionsBinding
 import com.example.quizbbb.model.Participante
@@ -17,10 +21,12 @@ class QuestionsActivity : AppCompatActivity() {
     var binding: ActivityQuestionsBinding? = null
 
     // Lista de participantes que vai ser usada como referencia dos participantes ja escolhidos
-    private var listaParticipantes: MutableMap<Int, Participante> = Participantes.participantesLista.toMutableMap()
+    private var listaParticipantes: MutableMap<Int, Participante> =
+        Participantes.participantesLista.toMutableMap()
 
     // Lista estatica de participantes para pegar seus nomes como outras opções a serem escolhidas
-    private var listaParticipantesEstatica: Map<Int, Participante> = Participantes.participantesLista
+    private var listaParticipantesEstatica: Map<Int, Participante> =
+        Participantes.participantesLista
 
     private val participantesPassados: MutableList<Int> = mutableListOf()
 
@@ -30,14 +36,16 @@ class QuestionsActivity : AppCompatActivity() {
     var opcao03: TextView? = null
     var opcao04: TextView? = null
     var participanteFoto: ImageView? = null
+    var btnResposta: Button? = null
 
     // Variável que acompanha em qual rodada estamos
     private var rodada: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityQuestionsBinding.inflate(layoutInflater)
-        setContentView(binding!!.root)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_questions)
+        binding!!.questionsActivity = this@QuestionsActivity
 
         // Variáveis de vinculação das opções
         opcao01 = binding?.tvPrimeiraOpcao
@@ -45,21 +53,43 @@ class QuestionsActivity : AppCompatActivity() {
         opcao03 = binding?.tvTerceiraOpcao
         opcao04 = binding?.tvQuartaOpcao
         participanteFoto = binding?.ivFotoParticipante
+        btnResposta = binding?.btResponder
 
-        numRandom()
-
-        // Setar nova questão ao clicar no botão 'Responder'
-        val btnResponder = binding?.btResponder
-        btnResponder?.setOnClickListener {
-            numRandom()
-        }
-
-        // Cria lista para adicionar os participantes que já foram escolhidos para que não repitam
-
+        gerarOpcoes()
 
     }
 
-    fun numRandom() {
+    // Variável que recebe o nome da resposta correta
+    var respostaCorreta: String = ""
+
+    // Variável que recebe a opção escolhida
+    var opcaoEscolhida: String = ""
+
+    /*
+    Função para altera a cor da resposta escolhida
+    */
+    fun alteraCorEscolha(view: TextView) {
+        opcao01?.setBackgroundResource(R.drawable.questions_background)
+        opcao02?.setBackgroundResource(R.drawable.questions_background)
+        opcao03?.setBackgroundResource(R.drawable.questions_background)
+        opcao04?.setBackgroundResource(R.drawable.questions_background)
+        view.setBackgroundResource(R.drawable.questions_background_chosen)
+        opcaoEscolhida = view.text.toString()
+    }
+
+    /*
+    Função que checa se a resposta está correta
+    */
+    fun checaResposta(): Boolean {
+        return opcaoEscolhida == respostaCorreta
+    }
+
+
+    /*
+    Função que escolhe um participante como o correto e gera novos nomes para serem
+    mostradas nos textViews das opções de resposta
+    */
+    fun gerarOpcoes() {
 
         if (rodada <= 10) {
 
@@ -92,11 +122,14 @@ class QuestionsActivity : AppCompatActivity() {
             }
             listaRandomizada.shuffle()
 
-            // Adiciona ID do participante na lista de escolhidos para não repetir
+            // Remove ID do participante na lista de escolhidos para não repetir nas proximas perguntas
             listaParticipantes.remove(participanteEscolhido?.id)
 
+            // Definir o nome do participante que é a resposta correta
+            respostaCorreta = participanteEscolhido!!.nome
+
             // Adicionar o nome do participante + 3 nomes aleatorios na listaOpcoes
-            listaOpcoes.add(participanteEscolhido!!.nome)
+            listaOpcoes.add(participanteEscolhido.nome)
             listaOpcoes.add(listaRandomizada[0])
             listaOpcoes.add(listaRandomizada[1])
             listaOpcoes.add(listaRandomizada[2])
@@ -112,7 +145,15 @@ class QuestionsActivity : AppCompatActivity() {
 
             listaOpcoes.clear()
 
+            // Altera a rodada do jogo
             rodada += 1
+
+            // Limpa as cores das opções
+            opcao01?.setBackgroundResource(R.drawable.questions_background)
+            opcao02?.setBackgroundResource(R.drawable.questions_background)
+            opcao03?.setBackgroundResource(R.drawable.questions_background)
+            opcao04?.setBackgroundResource(R.drawable.questions_background)
+
 
         } else {
             val intent = Intent(this, ResultsActivity::class.java)

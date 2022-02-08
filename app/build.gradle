@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.example.quizbbb"
         minSdk 21
-        targetSdk 32
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
@@ -24,6 +24,7 @@ android {
     }
 
     buildFeatures {
+        dataBinding true
         viewBinding true
     }
 
@@ -46,4 +47,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation'androidx.cardview:cardview:1.0.0'
+    
 }

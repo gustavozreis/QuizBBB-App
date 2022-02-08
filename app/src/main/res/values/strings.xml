@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">QuizBBB</string>
     <string name="quem_esse_participante">Qual é o nome desse participante?</string>
+    <string name="bt_inicio">Inicio</string>
     <string name="bt_responder">RESPONDER</string>
-    <string name="bt_excluir_opcao">EXCLUIR \n OPÇÃO</string>
+    <string name="bt_excluir_opcao">EXCLUIR \n1 OPÇÃO</string>
     <string name="bt_dica_ano">DICA</string>
     <string name="bt_comecar">Começar</string>
     <string name="et_hint">Ex: Tadeu</string>

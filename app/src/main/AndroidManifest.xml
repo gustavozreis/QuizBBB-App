@@ -15,6 +15,11 @@
             android:theme="@style/NoActionBar"
             />
         <activity
+            android:name=".ResultsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"
+            />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"

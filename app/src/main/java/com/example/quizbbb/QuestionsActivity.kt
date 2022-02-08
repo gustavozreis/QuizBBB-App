@@ -32,7 +32,7 @@ class QuestionsActivity : AppCompatActivity() {
     var participanteFoto: ImageView? = null
 
     // Variável que acompanha em qual rodada estamos
-    private val rodada: Int = 0
+    private var rodada: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +64,14 @@ class QuestionsActivity : AppCompatActivity() {
         if (rodada <= 10) {
 
             var tamanhoLista: Int = listaParticipantes.size
-            var numRandom: Int = (1..tamanhoLista).random()
+
+            // Lista com os valores de id dos participantes restantes
+            var listaParticipantesRestantes: MutableList<Int> = mutableListOf()
+            for ((key, value) in listaParticipantes) {
+                listaParticipantesRestantes.add(key)
+            }
+
+            var numRandom: Int = (listaParticipantesRestantes).random()
 
             // Variavel para o participante escolhido da questao
             var participanteEscolhido: Participante? = listaParticipantes[numRandom]
@@ -75,7 +82,7 @@ class QuestionsActivity : AppCompatActivity() {
             // Variavel da lista de nomes dos outros participantes para ser randomizada
             val listaRandomizada: MutableList<String> = mutableListOf()
 
-            //TODO: randomizar nomes dos outros participantes do mesmo genero do escolhido
+            // Randomizar nomes dos outros participantes do mesmo genero do escolhido
             for ((key: Int, value: Participante) in listaParticipantesEstatica) {
                 if (key != participanteEscolhido?.id
                     && value.genero == participanteEscolhido?.genero
@@ -87,8 +94,6 @@ class QuestionsActivity : AppCompatActivity() {
 
             // Adiciona ID do participante na lista de escolhidos para não repetir
             listaParticipantes.remove(participanteEscolhido?.id)
-
-            //TODO: adicionar nomes dos participantes em outra lista
 
             // Adicionar o nome do participante + 3 nomes aleatorios na listaOpcoes
             listaOpcoes.add(participanteEscolhido!!.nome)
@@ -106,6 +111,8 @@ class QuestionsActivity : AppCompatActivity() {
             participanteFoto?.setImageResource(participanteEscolhido.foto)
 
             listaOpcoes.clear()
+
+            rodada += 1
 
         } else {
             val intent = Intent(this, ResultsActivity::class.java)

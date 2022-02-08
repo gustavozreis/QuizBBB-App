@@ -21,8 +21,10 @@
             android:layout_height="800dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.507"
             app:srcCompat="@drawable/act_questions_background" />
 
         <ImageView
@@ -47,31 +49,63 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_foto_participante">
 
             <TextView
+                android:id="@+id/tv_sua_pontuacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sua pontuação:"
+                android:layout_marginStart="50dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_pontuacao"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
                 android:id="@+id/tv_pontuacao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sua pontuação: 35"
-                app:layout_constraintBottom_toTopOf="@+id/pb_contagem_perguntas"
+                android:text="0"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintStart_toEndOf="@id/tv_sua_pontuacao"
+                app:layout_constraintEnd_toStartOf="@id/tv_pontos_se_acertar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_pontos_se_acertar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pontos se Acertar:"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintStart_toEndOf="@id/tv_pontuacao"
                 app:layout_constraintEnd_toStartOf="@id/tv_pontos_nessa_pergunta"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <TextView
                 android:id="@+id/tv_pontos_nessa_pergunta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pontos se Acertar: 5"
-                app:layout_constraintBottom_toTopOf="@+id/pb_contagem_perguntas"
+                android:text="5"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintStart_toEndOf="@id/tv_pontos_se_acertar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_pontuacao"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ProgressBar
                 android:id="@+id/pb_contagem_perguntas"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:progress="25"
+                android:progress="10"
+                android:backgroundTint="@color/design_default_color_error"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -161,6 +195,7 @@
             android:backgroundTint="@color/design_default_color_primary_dark"
             android:text="@string/bt_dica_ano"
             android:textSize="20sp"
+            android:onClick="@{() -> questionsActivity.darDica()}"
             app:layout_constraintEnd_toStartOf="@id/bt_excluir_opcao"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_quarta_opcao" />

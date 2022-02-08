@@ -5,9 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -39,6 +37,8 @@ class QuestionsActivity : AppCompatActivity() {
     var btnResposta: Button? = null
     var tvSuaPontuacao: TextView? = null
     var tvPontosDaPergunta: TextView? = null
+    var progressBar: ProgressBar? = null
+    var btDica: Button? = null
 
     // Variável que acompanha a pontuação do usuário
     var pontuacaoUsuario: Int = 0
@@ -64,6 +64,8 @@ class QuestionsActivity : AppCompatActivity() {
         btnResposta = binding?.btResponder
         tvSuaPontuacao = binding?.tvPontuacao
         tvPontosDaPergunta = binding?.tvPontosNessaPergunta
+        progressBar = binding?.pbContagemPerguntas
+        btDica = binding?.btDica
 
         gerarOpcoes()
 
@@ -75,24 +77,27 @@ class QuestionsActivity : AppCompatActivity() {
     // Variável que recebe a opção escolhida
     var opcaoEscolhida: String = ""
 
-    // Variável que guarda o estado das questoes (INICIO, ESCOLHIDO, FINALIZAR)
-    var estadoDaQuestao: String = "INICIO"
+    // Instancia do participante escolhido para ser usado fora do escopo da função 'gerarOpcoes'
+    var participanteEscolhidoOut: Participante? = null
 
     /*
     Função para altera a cor da resposta escolhida
     */
     fun alteraCorEscolha(view: TextView) {
-        opcao01?.setBackgroundResource(R.drawable.questions_background)
-        opcao02?.setBackgroundResource(R.drawable.questions_background)
-        opcao03?.setBackgroundResource(R.drawable.questions_background)
-        opcao04?.setBackgroundResource(R.drawable.questions_background)
-        view.setBackgroundResource(R.drawable.questions_background_chosen)
-        opcaoEscolhida = view.text.toString()
+        if (btnResposta?.text == "RESPONDER") {
+            opcao01?.setBackgroundResource(R.drawable.questions_background)
+            opcao02?.setBackgroundResource(R.drawable.questions_background)
+            opcao03?.setBackgroundResource(R.drawable.questions_background)
+            opcao04?.setBackgroundResource(R.drawable.questions_background)
+            view.setBackgroundResource(R.drawable.questions_background_chosen)
+            opcaoEscolhida = view.text.toString()
+        }
     }
 
     /*
     Função que randomiza um participante como correto e altera o nome das opções
     */
+
     fun gerarOpcoes() {
         var tamanhoLista: Int = listaParticipantes.size
 
@@ -106,6 +111,9 @@ class QuestionsActivity : AppCompatActivity() {
 
         // Variavel para o participante escolhido da questao
         var participanteEscolhido: Participante? = listaParticipantes[numRandom]
+
+        // Seta o participante para ser usado fora do escopo dessa função
+        participanteEscolhidoOut = participanteEscolhido
 
         // Variavel da lista de opções
         var listaOpcoes: MutableList<String> = mutableListOf()
@@ -169,26 +177,75 @@ class QuestionsActivity : AppCompatActivity() {
     Função que coloriza as opções após escolha e envio da resposta
     */
     fun colorizaOpcoes() {
-        val listaOpcoes: MutableList<TextView?> = mutableListOf (opcao01, opcao02, opcao03, opcao04)
-        if (checaResposta()) {
-            for (opcoes in listaOpcoes) {
-                if (opcoes?.text == respostaCorreta) {
-                    opcoes.setBackgroundResource(R.drawable.questions_background_correct)
-                } else {
-                    opcoes?.setBackgroundResource(R.drawable.questions_background)
-                }
-            }
+
+        if (opcaoEscolhida == "") {
+            Toast.makeText(this, "Escolha uma opção!", Toast.LENGTH_SHORT).show()
         } else {
-            for (opcoes in listaOpcoes) {
-                if (opcoes?.text == respostaCorreta) {
-                    opcoes.setBackgroundResource(R.drawable.questions_background_correct)
-                } else if (opcoes?.text == opcaoEscolhida) {
-                    opcoes.setBackgroundResource(R.drawable.questions_background_wrong)
-                } else if (opcoes?.text != opcaoEscolhida || opcoes.text != respostaCorreta) {
-                    opcoes?.setBackgroundResource(R.drawable.questions_background)
+            val listaOpcoes: MutableList<TextView?> =
+                mutableListOf(opcao01, opcao02, opcao03, opcao04)
+            // Resposta certa
+            if (checaResposta()) {
+                btnResposta?.text = "CONTINUAR"
+                atualizaPontuacao()
+                for (opcoes in listaOpcoes) {
+                    if (opcoes?.text == respostaCorreta) {
+                        opcoes.setBackgroundResource(R.drawable.questions_background_correct)
+                    } else {
+                        opcoes?.setBackgroundResource(R.drawable.questions_background)
+                    }
+                }
+            // Resposta Errada
+            } else {
+                btnResposta?.text = "CONTINUAR"
+                for (opcoes in listaOpcoes) {
+                    if (opcoes?.text == respostaCorreta) {
+                        opcoes.setBackgroundResource(R.drawable.questions_background_correct)
+                    } else if (opcoes?.text == opcaoEscolhida) {
+                        opcoes.setBackgroundResource(R.drawable.questions_background_wrong)
+                    } else if (opcoes?.text != opcaoEscolhida || opcoes.text != respostaCorreta) {
+                        opcoes?.setBackgroundResource(R.drawable.questions_background)
+                    }
                 }
             }
         }
+    }
+
+    /*
+    Função que atualiza a pontuação do usuário
+    */
+    fun atualizaPontuacao() {
+        var pontosAtuais: Int = tvSuaPontuacao?.text.toString().toInt()
+        var pontosDaRodada: Int = tvPontosDaPergunta?.text.toString().toInt()
+        pontosAtuais += pontosDaRodada
+        tvSuaPontuacao?.text = pontosAtuais.toString()
+    }
+
+    /*
+    Função que atualiza a progress bar
+    */
+    fun atualizaProgressBar() {
+        var progressoAtual: Int = progressBar!!.progress
+        progressoAtual = progressoAtual.plus(10)
+        progressBar?.progress = progressoAtual
+    }
+
+    /*
+    Função que dá a dica
+    */
+    fun darDica() {
+        if (!(btDica?.text != "DICA" || btnResposta?.text != "RESPONDER")) {
+            btDica?.text = participanteEscolhidoOut?.edicaoQueParticipou
+            var pontosDaRodada: Int = tvPontosDaPergunta?.text.toString().toInt()
+            pontosDaRodada -= 1
+            tvPontosDaPergunta?.text = pontosDaRodada.toString()
+        }
+    }
+
+    /*
+    Função que reseta o botão de dica para o estao original
+    */
+    fun resetaDica() {
+        btDica?.text = "DICA"
     }
 
     /*
@@ -205,12 +262,15 @@ class QuestionsActivity : AppCompatActivity() {
 
         if (rodada < 10 && btnResposta?.text == "RESPONDER") {
             colorizaOpcoes()
-            btnResposta?.text = "CONTINUAR"
         } else if (rodada < 10 && btnResposta?.text == "CONTINUAR") {
             gerarOpcoes()
             resetarCores()
+            opcaoEscolhida = ""
             rodada += 1
+            atualizaProgressBar()
             btnResposta?.text = "RESPONDER"
+            tvPontosDaPergunta?.text = "5"
+            resetaDica()
         } else if  (rodada == 10 && (btnResposta!!.text == "RESPONDER")) {
             colorizaOpcoes()
             btnResposta?.text = "FINALIZAR"

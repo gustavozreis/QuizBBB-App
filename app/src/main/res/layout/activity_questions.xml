@@ -9,13 +9,14 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/act_questions_background" />
 
     <ImageView
-        android:id="@+id/iv_participante"
+        android:id="@+id/iv_foto_participante"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:src="@drawable/gilberto_bbb21"
@@ -27,7 +28,7 @@
         android:layout_height="40dp"
         android:background="@color/white"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/iv_participante">
+        app:layout_constraintTop_toBottomOf="@+id/iv_foto_participante">
 
         <TextView
             android:id="@+id/tv_pontuacao"
@@ -78,11 +79,13 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/questions_background"
         android:gravity="center"
+        android:textColor="#FF3700B3"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_pergunta_questao"
-        tools:text="GILBERTO" />
+        tools:text="GILBERTO"
+        android:text="GILBERTO"/>
 
     <TextView
         android:id="@+id/tv_segunda_opcao"
@@ -91,6 +94,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/questions_background"
         android:gravity="center"
+        android:textColor="#FF3700B3"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,6 +108,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/questions_background"
         android:gravity="center"
+        android:textColor="#FF3700B3"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -117,6 +122,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/questions_background"
         android:gravity="center"
+        android:textColor="#FF3700B3"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

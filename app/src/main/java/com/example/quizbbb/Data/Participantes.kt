@@ -64,7 +64,7 @@ object Participantes {
             nome = "Helena",
             edicaoQueParticipou = "BBB 1",
             genero = FEMININO,
-            foto = R.drawable.bbb01_estela
+            foto = R.drawable.bbb01_helena
         ),
         9 to Participante(
             id = 9,

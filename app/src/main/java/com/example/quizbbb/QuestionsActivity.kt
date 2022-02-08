@@ -37,6 +37,14 @@ class QuestionsActivity : AppCompatActivity() {
     var opcao04: TextView? = null
     var participanteFoto: ImageView? = null
     var btnResposta: Button? = null
+    var tvSuaPontuacao: TextView? = null
+    var tvPontosDaPergunta: TextView? = null
+
+    // Variável que acompanha a pontuação do usuário
+    var pontuacaoUsuario: Int = 0
+
+    // Variável que mostra a pontuação que essa rodada vale
+    var pontosDaRodada: Int = 5
 
     // Variável que acompanha em qual rodada estamos
     private var rodada: Int = 1
@@ -54,6 +62,8 @@ class QuestionsActivity : AppCompatActivity() {
         opcao04 = binding?.tvQuartaOpcao
         participanteFoto = binding?.ivFotoParticipante
         btnResposta = binding?.btResponder
+        tvSuaPontuacao = binding?.tvPontuacao
+        tvPontosDaPergunta = binding?.tvPontosNessaPergunta
 
         gerarOpcoes()
 
@@ -64,6 +74,9 @@ class QuestionsActivity : AppCompatActivity() {
 
     // Variável que recebe a opção escolhida
     var opcaoEscolhida: String = ""
+
+    // Variável que guarda o estado das questoes (INICIO, ESCOLHIDO, FINALIZAR)
+    var estadoDaQuestao: String = "INICIO"
 
     /*
     Função para altera a cor da resposta escolhida
@@ -78,86 +91,132 @@ class QuestionsActivity : AppCompatActivity() {
     }
 
     /*
+    Função que randomiza um participante como correto e altera o nome das opções
+    */
+    fun gerarOpcoes() {
+        var tamanhoLista: Int = listaParticipantes.size
+
+        // Lista com os valores de id dos participantes restantes
+        var listaParticipantesRestantes: MutableList<Int> = mutableListOf()
+        for ((key, value) in listaParticipantes) {
+            listaParticipantesRestantes.add(key)
+        }
+
+        var numRandom: Int = (listaParticipantesRestantes).random()
+
+        // Variavel para o participante escolhido da questao
+        var participanteEscolhido: Participante? = listaParticipantes[numRandom]
+
+        // Variavel da lista de opções
+        var listaOpcoes: MutableList<String> = mutableListOf()
+
+        // Variavel da lista de nomes dos outros participantes para ser randomizada
+        val listaRandomizada: MutableList<String> = mutableListOf()
+
+        // Randomizar nomes dos outros participantes do mesmo genero do escolhido
+        for ((key: Int, value: Participante) in listaParticipantesEstatica) {
+            if (key != participanteEscolhido?.id
+                && value.genero == participanteEscolhido?.genero
+            ) {
+                listaRandomizada.add(value.nome)
+            }
+        }
+        listaRandomizada.shuffle()
+
+        // Remove ID do participante na lista de escolhidos para não repetir nas proximas perguntas
+        listaParticipantes.remove(participanteEscolhido?.id)
+
+        // Definir o nome do participante que é a resposta correta
+        respostaCorreta = participanteEscolhido!!.nome
+
+        // Adicionar o nome do participante + 3 nomes aleatorios na listaOpcoes
+        listaOpcoes.add(participanteEscolhido.nome)
+        listaOpcoes.add(listaRandomizada[0])
+        listaOpcoes.add(listaRandomizada[1])
+        listaOpcoes.add(listaRandomizada[2])
+
+        // Randomizar ordem da lista com as 4 opções
+        listaOpcoes.shuffle()
+
+        // Transmitir os valores para as textView de opcoes
+        opcao01?.text = listaOpcoes[0]
+        opcao02?.text = listaOpcoes[1]
+        opcao03?.text = listaOpcoes[2]
+        opcao04?.text = listaOpcoes[3]
+        participanteFoto?.setImageResource(participanteEscolhido.foto)
+
+        listaOpcoes.clear()
+    }
+
+    /*
+    Função reseta as cores das opções
+    */
+    fun resetarCores() {
+        opcao01?.setBackgroundResource(R.drawable.questions_background)
+        opcao02?.setBackgroundResource(R.drawable.questions_background)
+        opcao03?.setBackgroundResource(R.drawable.questions_background)
+        opcao04?.setBackgroundResource(R.drawable.questions_background)
+    }
+
+    /*
     Função que checa se a resposta está correta
     */
     fun checaResposta(): Boolean {
         return opcaoEscolhida == respostaCorreta
     }
 
-
     /*
-    Função que escolhe um participante como o correto e gera novos nomes para serem
-    mostradas nos textViews das opções de resposta
+    Função que coloriza as opções após escolha e envio da resposta
     */
-    fun gerarOpcoes() {
-
-        if (rodada <= 10) {
-
-            var tamanhoLista: Int = listaParticipantes.size
-
-            // Lista com os valores de id dos participantes restantes
-            var listaParticipantesRestantes: MutableList<Int> = mutableListOf()
-            for ((key, value) in listaParticipantes) {
-                listaParticipantesRestantes.add(key)
-            }
-
-            var numRandom: Int = (listaParticipantesRestantes).random()
-
-            // Variavel para o participante escolhido da questao
-            var participanteEscolhido: Participante? = listaParticipantes[numRandom]
-
-            // Variavel da lista de opções
-            var listaOpcoes: MutableList<String> = mutableListOf()
-
-            // Variavel da lista de nomes dos outros participantes para ser randomizada
-            val listaRandomizada: MutableList<String> = mutableListOf()
-
-            // Randomizar nomes dos outros participantes do mesmo genero do escolhido
-            for ((key: Int, value: Participante) in listaParticipantesEstatica) {
-                if (key != participanteEscolhido?.id
-                    && value.genero == participanteEscolhido?.genero
-                ) {
-                    listaRandomizada.add(value.nome)
+    fun colorizaOpcoes() {
+        val listaOpcoes: MutableList<TextView?> = mutableListOf (opcao01, opcao02, opcao03, opcao04)
+        if (checaResposta()) {
+            for (opcoes in listaOpcoes) {
+                if (opcoes?.text == respostaCorreta) {
+                    opcoes.setBackgroundResource(R.drawable.questions_background_correct)
+                } else {
+                    opcoes?.setBackgroundResource(R.drawable.questions_background)
                 }
             }
-            listaRandomizada.shuffle()
-
-            // Remove ID do participante na lista de escolhidos para não repetir nas proximas perguntas
-            listaParticipantes.remove(participanteEscolhido?.id)
-
-            // Definir o nome do participante que é a resposta correta
-            respostaCorreta = participanteEscolhido!!.nome
-
-            // Adicionar o nome do participante + 3 nomes aleatorios na listaOpcoes
-            listaOpcoes.add(participanteEscolhido.nome)
-            listaOpcoes.add(listaRandomizada[0])
-            listaOpcoes.add(listaRandomizada[1])
-            listaOpcoes.add(listaRandomizada[2])
-            // Randomizar ordem da lista com as 4 opções
-            listaOpcoes.shuffle()
-
-            // Transmitir os valores para as textView de opcoes
-            opcao01?.text = listaOpcoes[0]
-            opcao02?.text = listaOpcoes[1]
-            opcao03?.text = listaOpcoes[2]
-            opcao04?.text = listaOpcoes[3]
-            participanteFoto?.setImageResource(participanteEscolhido.foto)
-
-            listaOpcoes.clear()
-
-            // Altera a rodada do jogo
-            rodada += 1
-
-            // Limpa as cores das opções
-            opcao01?.setBackgroundResource(R.drawable.questions_background)
-            opcao02?.setBackgroundResource(R.drawable.questions_background)
-            opcao03?.setBackgroundResource(R.drawable.questions_background)
-            opcao04?.setBackgroundResource(R.drawable.questions_background)
-
-
         } else {
-            val intent = Intent(this, ResultsActivity::class.java)
-            startActivity(intent)
+            for (opcoes in listaOpcoes) {
+                if (opcoes?.text == respostaCorreta) {
+                    opcoes.setBackgroundResource(R.drawable.questions_background_correct)
+                } else if (opcoes?.text == opcaoEscolhida) {
+                    opcoes.setBackgroundResource(R.drawable.questions_background_wrong)
+                } else if (opcoes?.text != opcaoEscolhida || opcoes.text != respostaCorreta) {
+                    opcoes?.setBackgroundResource(R.drawable.questions_background)
+                }
+            }
+        }
+    }
+
+    /*
+    Função checa se a resposta está correta, altera os pontos
+    e muda para a próxima pergunta
+    */
+    fun irParaOFinal() {
+
+        val intent = Intent(this, ResultsActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun cliqueDoBotaoResposta() {
+
+        if (rodada < 10 && btnResposta?.text == "RESPONDER") {
+            colorizaOpcoes()
+            btnResposta?.text = "CONTINUAR"
+        } else if (rodada < 10 && btnResposta?.text == "CONTINUAR") {
+            gerarOpcoes()
+            resetarCores()
+            rodada += 1
+            btnResposta?.text = "RESPONDER"
+        } else if  (rodada == 10 && (btnResposta!!.text == "RESPONDER")) {
+            colorizaOpcoes()
+            btnResposta?.text = "FINALIZAR"
+            btnResposta?.setOnClickListener {
+                irParaOFinal()
+            }
         }
     }
 

@@ -184,9 +184,9 @@
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/bt_responder"
-            android:text="@string/bt_responder"
+            android:text="RESPONDER"
             android:textSize="15sp"
-            android:onClick="@{() -> questionsActivity.gerarOpcoes()}"
+            android:onClick="@{() -> questionsActivity.cliqueDoBotaoResposta()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bt_dica" />

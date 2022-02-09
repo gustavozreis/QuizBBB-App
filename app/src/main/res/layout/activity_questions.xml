@@ -108,7 +108,9 @@
                 android:backgroundTint="@color/design_default_color_error"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:progressBackgroundTint="@color/white"
+                android:progressTint="#c7abff"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

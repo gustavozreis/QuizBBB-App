@@ -2,12 +2,14 @@ package com.example.quizbbb
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.quizbbb.Data.Participantes
 import com.example.quizbbb.databinding.ActivityQuestionsBinding
@@ -39,6 +41,7 @@ class QuestionsActivity : AppCompatActivity() {
     var tvPontosDaPergunta: TextView? = null
     var progressBar: ProgressBar? = null
     var btDica: Button? = null
+    var btExcluiOpcao: Button? = null
 
     // Variável que acompanha a pontuação do usuário
     var pontuacaoUsuario: Int = 0
@@ -66,6 +69,7 @@ class QuestionsActivity : AppCompatActivity() {
         tvPontosDaPergunta = binding?.tvPontosNessaPergunta
         progressBar = binding?.pbContagemPerguntas
         btDica = binding?.btDica
+        btExcluiOpcao = binding?.btExcluirOpcao
 
         gerarOpcoes()
 
@@ -79,6 +83,9 @@ class QuestionsActivity : AppCompatActivity() {
 
     // Instancia do participante escolhido para ser usado fora do escopo da função 'gerarOpcoes'
     var participanteEscolhidoOut: Participante? = null
+
+    // Variável da lista de opções para ser usada na função de excluir opções
+    var listaOpcoesExcluir: MutableList<String> = mutableListOf()
 
     /*
     Função para altera a cor da resposta escolhida
@@ -145,6 +152,9 @@ class QuestionsActivity : AppCompatActivity() {
 
         // Randomizar ordem da lista com as 4 opções
         listaOpcoes.shuffle()
+
+        // Transfere o valor da lista de opções para variável da função que elimina uma opção
+        listaOpcoesExcluir.addAll(listaOpcoes)
 
         // Transmitir os valores para as textView de opcoes
         opcao01?.text = listaOpcoes[0]
@@ -249,14 +259,58 @@ class QuestionsActivity : AppCompatActivity() {
     }
 
     /*
-    Função checa se a resposta está correta, altera os pontos
-    e muda para a próxima pergunta
+    Função elimina uma das opçõe de resposta
+    */
+    fun excluiOpcao() {
+
+        var listaExcluir: MutableList<String> = listaOpcoesExcluir
+
+        var nomeParticipanteEscolhido: String = participanteEscolhidoOut!!.nome
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            listaExcluir.removeIf { nome: String -> nome == nomeParticipanteEscolhido }
+        }
+
+        listaExcluir.shuffle()
+        var nomeParaExcluir: String = listaExcluir[0]
+
+        var listaOpcoes: MutableList<TextView?> = mutableListOf(opcao01, opcao02, opcao03, opcao04)
+
+        if (btnResposta?.text == "RESPONDER") {
+            for (opcoes in listaOpcoes) {
+                if (opcoes?.text == nomeParaExcluir) {
+                    opcoes.isVisible = false
+
+                    var pontosDaRodada: Int = tvPontosDaPergunta?.text.toString().toInt()
+                    pontosDaRodada -= 1
+                    tvPontosDaPergunta?.text = pontosDaRodada.toString()
+                    btExcluiOpcao?.isEnabled = false
+                }
+            }
+        }
+
+
+
+    }
+
+    /*
+    Função que leva o usuário para a activity final
     */
     fun irParaOFinal() {
 
         val intent = Intent(this, ResultsActivity::class.java)
         startActivity(intent)
     }
+
+    /*
+    Função que retorna as opções (TextView) para visiveis
+    */
+    fun retornaOpcoes () {
+        var listaOpcoes: MutableList<TextView?> = mutableListOf(opcao01, opcao02, opcao03, opcao04)
+        for (opcoes in listaOpcoes) {
+            opcoes?.isVisible = true
+        }
+    }
+
 
     fun cliqueDoBotaoResposta() {
 
@@ -271,6 +325,8 @@ class QuestionsActivity : AppCompatActivity() {
             btnResposta?.text = "RESPONDER"
             tvPontosDaPergunta?.text = "5"
             resetaDica()
+            retornaOpcoes()
+            btExcluiOpcao?.isEnabled = true
         } else if  (rodada == 10 && (btnResposta!!.text == "RESPONDER")) {
             colorizaOpcoes()
             btnResposta?.text = "FINALIZAR"

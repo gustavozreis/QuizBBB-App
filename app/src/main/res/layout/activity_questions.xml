@@ -211,6 +211,7 @@
             android:backgroundTint="@color/design_default_color_primary_dark"
             android:text="@string/bt_excluir_opcao"
             android:textSize="14sp"
+            android:onClick="@{() -> questionsActivity.excluiOpcao()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/bt_dica"
             app:layout_constraintTop_toBottomOf="@id/tv_quarta_opcao" />

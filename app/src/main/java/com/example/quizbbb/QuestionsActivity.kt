@@ -61,7 +61,7 @@ class QuestionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_questions)
-        binding!!.questionsActivity = this@QuestionsActivity
+        binding?.questionsActivity = this@QuestionsActivity
 
         // Variáveis de vinculação das opções
         opcao01 = binding?.tvPrimeiraOpcao

@@ -3,6 +3,7 @@ package com.example.quizbbb
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.quizbbb.Utils.PONTUACAO
@@ -18,7 +19,7 @@ class ResultsActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityResultsBinding.inflate(layoutInflater)
-        setContentView(binding!!.root)
+        setContentView(binding?.root)
 
         // Referencia os valores recebidos pelo intent
         var nomeUsuario: String = intent.getStringExtra(USER_NAME).toString()
@@ -26,8 +27,14 @@ class ResultsActivity: AppCompatActivity() {
         var pontuacao: String = intent.getStringExtra(PONTUACAO).toString()
 
 
-        var tvSuaPontuacao: TextView = binding!!.tvPontuacao
-        tvSuaPontuacao.text = "Você fez ${pontuacao} pontos, ${nomeUsuario}!"
+        var tvSuaPontuacao: TextView? = binding?.tvPontuacao
+        tvSuaPontuacao?.text = "Você fez ${pontuacao} pontos, ${nomeUsuario}!"
+
+        // Botao 'Jogar novamente' que leva ao início do app
+        val btnJogarNovamente: Button? = binding?.btnJogarNovamente
+        btnJogarNovamente?.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
 
 
     }

@@ -5,14 +5,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/act_results_background"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="0dp" />
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_pontuacao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FINAL"
-        android:textSize="50sp"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Sua pontuação foi 7 de 10, Felipe!" />
+
+    <TextView
+        android:id="@+id/tv_frase_personalizada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tv_pontuacao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Pelo menos escapou do paredão." />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Jogar Novamente"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_frase_personalizada" />
 </androidx.constraintlayout.widget.ConstraintLayout>

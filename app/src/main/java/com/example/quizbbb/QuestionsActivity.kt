@@ -12,11 +12,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.quizbbb.Data.Participantes
+import com.example.quizbbb.Utils.*
 import com.example.quizbbb.databinding.ActivityQuestionsBinding
 import com.example.quizbbb.model.Participante
 import org.w3c.dom.Text
 
 class QuestionsActivity : AppCompatActivity() {
+
+    // Dado passado pelo intent: nome de usuário
+    var nomeUsuario: String? = intent.getStringExtra(USER_NAME)
 
     var binding: ActivityQuestionsBinding? = null
 
@@ -31,17 +35,17 @@ class QuestionsActivity : AppCompatActivity() {
     private val participantesPassados: MutableList<Int> = mutableListOf()
 
     // Variáveis de vinculação das opções
-    var opcao01: TextView? = null
-    var opcao02: TextView? = null
-    var opcao03: TextView? = null
-    var opcao04: TextView? = null
-    var participanteFoto: ImageView? = null
-    var btnResposta: Button? = null
-    var tvSuaPontuacao: TextView? = null
-    var tvPontosDaPergunta: TextView? = null
-    var progressBar: ProgressBar? = null
-    var btDica: Button? = null
-    var btExcluiOpcao: Button? = null
+    private var opcao01: TextView? = null
+    private var opcao02: TextView? = null
+    private var opcao03: TextView? = null
+    private var opcao04: TextView? = null
+    private var participanteFoto: ImageView? = null
+    private var btnResposta: Button? = null
+    private var tvSuaPontuacao: TextView? = null
+    private var tvPontosDaPergunta: TextView? = null
+    private var progressBar: ProgressBar? = null
+    private var btDica: Button? = null
+    private var btExcluiOpcao: Button? = null
 
     // Variável que acompanha a pontuação do usuário
     var pontuacaoUsuario: Int = 0
@@ -76,22 +80,22 @@ class QuestionsActivity : AppCompatActivity() {
     }
 
     // Variável que recebe o nome da resposta correta
-    var respostaCorreta: String = ""
+    private var respostaCorreta: String = ""
 
     // Variável que recebe a opção escolhida
-    var opcaoEscolhida: String = ""
+    private var opcaoEscolhida: String = ""
 
     // Instancia do participante escolhido para ser usado fora do escopo da função 'gerarOpcoes'
-    var participanteEscolhidoOut: Participante? = null
+    private var participanteEscolhidoOut: Participante? = null
 
     // Variável da lista de opções para ser usada na função de excluir opções
-    var listaOpcoesExcluir: MutableList<String> = mutableListOf()
+    private var listaOpcoesExcluir: MutableList<String> = mutableListOf()
 
     /*
     Função para altera a cor da resposta escolhida
     */
     fun alteraCorEscolha(view: TextView) {
-        if (btnResposta?.text == "RESPONDER") {
+        if (btnResposta?.text == RESPONDER) {
             opcao01?.setBackgroundResource(R.drawable.questions_background)
             opcao02?.setBackgroundResource(R.drawable.questions_background)
             opcao03?.setBackgroundResource(R.drawable.questions_background)
@@ -109,21 +113,21 @@ class QuestionsActivity : AppCompatActivity() {
         var tamanhoLista: Int = listaParticipantes.size
 
         // Lista com os valores de id dos participantes restantes
-        var listaParticipantesRestantes: MutableList<Int> = mutableListOf()
+        val listaParticipantesRestantes: MutableList<Int> = mutableListOf()
         for ((key, value) in listaParticipantes) {
             listaParticipantesRestantes.add(key)
         }
 
-        var numRandom: Int = (listaParticipantesRestantes).random()
+        val numRandom: Int = (listaParticipantesRestantes).random()
 
         // Variavel para o participante escolhido da questao
-        var participanteEscolhido: Participante? = listaParticipantes[numRandom]
+        val participanteEscolhido: Participante? = listaParticipantes[numRandom]
 
         // Seta o participante para ser usado fora do escopo dessa função
         participanteEscolhidoOut = participanteEscolhido
 
         // Variavel da lista de opções
-        var listaOpcoes: MutableList<String> = mutableListOf()
+        val listaOpcoes: MutableList<String> = mutableListOf()
 
         // Variavel da lista de nomes dos outros participantes para ser randomizada
         val listaRandomizada: MutableList<String> = mutableListOf()
@@ -195,7 +199,7 @@ class QuestionsActivity : AppCompatActivity() {
                 mutableListOf(opcao01, opcao02, opcao03, opcao04)
             // Resposta certa
             if (checaResposta()) {
-                btnResposta?.text = "CONTINUAR"
+                btnResposta?.text = CONTINUAR
                 atualizaPontuacao()
                 for (opcoes in listaOpcoes) {
                     if (opcoes?.text == respostaCorreta) {
@@ -225,7 +229,7 @@ class QuestionsActivity : AppCompatActivity() {
     */
     fun atualizaPontuacao() {
         var pontosAtuais: Int = tvSuaPontuacao?.text.toString().toInt()
-        var pontosDaRodada: Int = tvPontosDaPergunta?.text.toString().toInt()
+        val pontosDaRodada: Int = tvPontosDaPergunta?.text.toString().toInt()
         pontosAtuais += pontosDaRodada
         tvSuaPontuacao?.text = pontosAtuais.toString()
     }
@@ -243,7 +247,7 @@ class QuestionsActivity : AppCompatActivity() {
     Função que dá a dica
     */
     fun darDica() {
-        if (!(btDica?.text != "DICA" || btnResposta?.text != "RESPONDER")) {
+        if (!(btDica?.text != DICA || btnResposta?.text != RESPONDER)) {
             btDica?.text = participanteEscolhidoOut?.edicaoQueParticipou
             var pontosDaRodada: Int = tvPontosDaPergunta?.text.toString().toInt()
             pontosDaRodada -= 1
@@ -255,7 +259,7 @@ class QuestionsActivity : AppCompatActivity() {
     Função que reseta o botão de dica para o estao original
     */
     fun resetaDica() {
-        btDica?.text = "DICA"
+        btDica?.text = DICA
     }
 
     /*
@@ -263,19 +267,19 @@ class QuestionsActivity : AppCompatActivity() {
     */
     fun excluiOpcao() {
 
-        var listaExcluir: MutableList<String> = listaOpcoesExcluir
+        val listaExcluir: MutableList<String> = listaOpcoesExcluir
 
-        var nomeParticipanteEscolhido: String = participanteEscolhidoOut!!.nome
+        val nomeParticipanteEscolhido: String = participanteEscolhidoOut!!.nome
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             listaExcluir.removeIf { nome: String -> nome == nomeParticipanteEscolhido }
         }
 
         listaExcluir.shuffle()
-        var nomeParaExcluir: String = listaExcluir[0]
+        val nomeParaExcluir: String = listaExcluir[0]
 
-        var listaOpcoes: MutableList<TextView?> = mutableListOf(opcao01, opcao02, opcao03, opcao04)
+        val listaOpcoes: MutableList<TextView?> = mutableListOf(opcao01, opcao02, opcao03, opcao04)
 
-        if (btnResposta?.text == "RESPONDER") {
+        if (btnResposta?.text == RESPONDER) {
             for (opcoes in listaOpcoes) {
                 if (opcoes?.text == nomeParaExcluir) {
                     opcoes.isVisible = false
@@ -284,12 +288,11 @@ class QuestionsActivity : AppCompatActivity() {
                     pontosDaRodada -= 1
                     tvPontosDaPergunta?.text = pontosDaRodada.toString()
                     btExcluiOpcao?.isEnabled = false
+
+                    listaOpcoesExcluir.clear()
                 }
             }
         }
-
-
-
     }
 
     /*
@@ -297,7 +300,10 @@ class QuestionsActivity : AppCompatActivity() {
     */
     fun irParaOFinal() {
 
+        pontuacaoUsuario = tvSuaPontuacao.toString().toInt()
         val intent = Intent(this, ResultsActivity::class.java)
+        intent.putExtra(USER_NAME, nomeUsuario)
+        intent.putExtra(PONTUACAO, pontuacaoUsuario)
         startActivity(intent)
     }
 
@@ -305,7 +311,7 @@ class QuestionsActivity : AppCompatActivity() {
     Função que retorna as opções (TextView) para visiveis
     */
     fun retornaOpcoes () {
-        var listaOpcoes: MutableList<TextView?> = mutableListOf(opcao01, opcao02, opcao03, opcao04)
+        val listaOpcoes: MutableList<TextView?> = mutableListOf(opcao01, opcao02, opcao03, opcao04)
         for (opcoes in listaOpcoes) {
             opcoes?.isVisible = true
         }
@@ -314,20 +320,20 @@ class QuestionsActivity : AppCompatActivity() {
 
     fun cliqueDoBotaoResposta() {
 
-        if (rodada < 10 && btnResposta?.text == "RESPONDER") {
+        if (rodada < 10 && btnResposta?.text == RESPONDER) {
             colorizaOpcoes()
-        } else if (rodada < 10 && btnResposta?.text == "CONTINUAR") {
+        } else if (rodada < 10 && btnResposta?.text == CONTINUAR) {
             gerarOpcoes()
             resetarCores()
             opcaoEscolhida = ""
             rodada += 1
             atualizaProgressBar()
-            btnResposta?.text = "RESPONDER"
+            btnResposta?.text = RESPONDER
             tvPontosDaPergunta?.text = "5"
             resetaDica()
             retornaOpcoes()
             btExcluiOpcao?.isEnabled = true
-        } else if  (rodada == 10 && (btnResposta!!.text == "RESPONDER")) {
+        } else if  (rodada == 10 && (btnResposta!!.text == RESPONDER)) {
             colorizaOpcoes()
             btnResposta?.text = "FINALIZAR"
             btnResposta?.setOnClickListener {

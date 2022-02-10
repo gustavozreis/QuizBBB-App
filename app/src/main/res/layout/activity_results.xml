@@ -23,7 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Sua pontuação foi 7 de 10, Felipe!" />
+        tools:text="Você fez 34 pontos, Felipe!" />
 
     <TextView
         android:id="@+id/tv_frase_personalizada"

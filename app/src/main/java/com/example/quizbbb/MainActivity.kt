@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Insira seu nome para começar!", Toast.LENGTH_LONG).show()
             } else {
                 val intent = Intent(this, QuestionsActivity::class.java)
-                intent.putExtra(USER_NAME, btnComecar.text.toString())
+                intent.putExtra(USER_NAME, etUserName.text.toString())
                 startActivity(intent)
             }
         }

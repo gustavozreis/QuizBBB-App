@@ -20,7 +20,7 @@ import org.w3c.dom.Text
 class QuestionsActivity : AppCompatActivity() {
 
     // Dado passado pelo intent: nome de usuário
-    var nomeUsuario: String? = intent.getStringExtra(USER_NAME)
+    var nomeUsuario: String? = null
 
     var binding: ActivityQuestionsBinding? = null
 
@@ -47,8 +47,9 @@ class QuestionsActivity : AppCompatActivity() {
     private var btDica: Button? = null
     private var btExcluiOpcao: Button? = null
 
+
     // Variável que acompanha a pontuação do usuário
-    var pontuacaoUsuario: Int = 0
+    var pontuacaoUsuario: String = ""
 
     // Variável que mostra a pontuação que essa rodada vale
     var pontosDaRodada: Int = 5
@@ -74,6 +75,9 @@ class QuestionsActivity : AppCompatActivity() {
         progressBar = binding?.pbContagemPerguntas
         btDica = binding?.btDica
         btExcluiOpcao = binding?.btExcluirOpcao
+
+        // Referencia nomeUsuario pegado no intent
+        nomeUsuario = intent.getStringExtra(USER_NAME).toString()
 
         gerarOpcoes()
 
@@ -300,7 +304,7 @@ class QuestionsActivity : AppCompatActivity() {
     */
     fun irParaOFinal() {
 
-        pontuacaoUsuario = tvSuaPontuacao.toString().toInt()
+        pontuacaoUsuario = tvSuaPontuacao?.text.toString()
         val intent = Intent(this, ResultsActivity::class.java)
         intent.putExtra(USER_NAME, nomeUsuario)
         intent.putExtra(PONTUACAO, pontuacaoUsuario)

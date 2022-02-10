@@ -116,6 +116,9 @@ class QuestionsActivity : AppCompatActivity() {
     fun gerarOpcoes() {
         var tamanhoLista: Int = listaParticipantes.size
 
+        // Esvazia lista das opcoes de exclusao da funcao 'excluirOpcao' para que o app nao quebre
+        listaOpcoesExcluir.clear()
+
         // Lista com os valores de id dos participantes restantes
         val listaParticipantesRestantes: MutableList<Int> = mutableListOf()
         for ((key, value) in listaParticipantes) {
@@ -293,7 +296,7 @@ class QuestionsActivity : AppCompatActivity() {
                     tvPontosDaPergunta?.text = pontosDaRodada.toString()
                     btExcluiOpcao?.isEnabled = false
 
-                    listaOpcoesExcluir.clear()
+
                 }
             }
         }

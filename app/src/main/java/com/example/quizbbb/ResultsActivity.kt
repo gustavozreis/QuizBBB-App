@@ -14,6 +14,8 @@ import com.example.quizbbb.databinding.ActivityResultsBinding
 class ResultsActivity: AppCompatActivity() {
 
     private var binding: ActivityResultsBinding? = null
+    private var tvFrasePersonalizada: TextView? = null
+    private var pontuacao: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,14 +23,16 @@ class ResultsActivity: AppCompatActivity() {
         binding = ActivityResultsBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        // Referencia o textView da frase personalizada
+        tvFrasePersonalizada = binding?.tvFrasePersonalizada
+
         // Referencia os valores recebidos pelo intent
-        var nomeUsuario: String = intent.getStringExtra(USER_NAME).toString()
+        val nomeUsuario: String = intent.getStringExtra(USER_NAME).toString()
+        pontuacao = intent.getStringExtra(PONTUACAO).toString()
 
-        var pontuacao: String = intent.getStringExtra(PONTUACAO).toString()
-
-
-        var tvSuaPontuacao: TextView? = binding?.tvPontuacao
-        tvSuaPontuacao?.text = "Você fez ${pontuacao} pontos, ${nomeUsuario}!"
+        // Atualiza a frase com o nome e a pontuação do usuário
+        val tvSuaPontuacao: TextView? = binding?.tvPontuacao
+        tvSuaPontuacao?.text = "Você fez ${pontuacao} pontos, ${nomeUsuario}."
 
         // Botao 'Jogar novamente' que leva ao início do app
         val btnJogarNovamente: Button? = binding?.btnJogarNovamente
@@ -36,7 +40,20 @@ class ResultsActivity: AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
+        atualizaFrasePersonalizada()
 
+    }
+
+    // Função que verifica pontuação final e retorna uma frase personalizada
+    fun atualizaFrasePersonalizada() {
+        when (pontuacao?.toInt()) {
+            in 0..9 -> tvFrasePersonalizada?.text = "Eita, você realmente assiste BBB?"
+            in 10..19 -> tvFrasePersonalizada?.text = "Podia ser pior, aposto que acertou só os mais famosos, né?"
+            in 20..29 -> tvFrasePersonalizada?.text = "Hmmm, você acompanha mas não assiste muito né?"
+            in 30..39 -> tvFrasePersonalizada?.text = "Dá pra ver que assistiu bastantes edições!"
+            in 40..49 -> tvFrasePersonalizada?.text = "Quase perfeito, foi por pouco!"
+            50 -> tvFrasePersonalizada?.text = "Parabéns, você é uma enciclopédia do BBB!"
+        }
     }
 }
 

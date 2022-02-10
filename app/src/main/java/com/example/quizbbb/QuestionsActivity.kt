@@ -312,6 +312,7 @@ class QuestionsActivity : AppCompatActivity() {
         intent.putExtra(USER_NAME, nomeUsuario)
         intent.putExtra(PONTUACAO, pontuacaoUsuario)
         startActivity(intent)
+        finish()
     }
 
     /*
@@ -347,6 +348,10 @@ class QuestionsActivity : AppCompatActivity() {
                 irParaOFinal()
             }
         }
+    }
+
+    // Sobrescricao do botao voltar para que seja desabilitado
+    override fun onBackPressed() {
     }
 
 }

@@ -55,6 +55,10 @@ class ResultsActivity: AppCompatActivity() {
             50 -> tvFrasePersonalizada?.text = "Parabéns, você é uma enciclopédia do BBB!"
         }
     }
+
+    // Sobrescricao do botao voltar para que seja desabilitado
+    override fun onBackPressed() {
+    }
 }
 
 

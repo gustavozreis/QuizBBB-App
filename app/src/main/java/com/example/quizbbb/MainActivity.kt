@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, QuestionsActivity::class.java)
                 intent.putExtra(USER_NAME, etUserName.text.toString())
                 startActivity(intent)
+                finish()
             }
         }
 
@@ -56,6 +57,5 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         startVideo()
     }
-
 
 }

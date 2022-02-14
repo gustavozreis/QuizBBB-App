@@ -350,8 +350,4 @@ class QuestionsActivity : AppCompatActivity() {
         }
     }
 
-    // Sobrescricao do botao voltar para que seja desabilitado
-    override fun onBackPressed() {
-    }
-
 }

@@ -1,7 +1,9 @@
 package com.example.quizbbb
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -217,7 +219,7 @@ class QuestionsActivity : AppCompatActivity() {
                 }
             // Resposta Errada
             } else {
-                btnResposta?.text = "CONTINUAR"
+                btnResposta?.text = CONTINUAR
                 for (opcoes in listaOpcoes) {
                     if (opcoes?.text == respostaCorreta) {
                         opcoes.setBackgroundResource(R.drawable.questions_background_correct)
@@ -343,7 +345,7 @@ class QuestionsActivity : AppCompatActivity() {
             btExcluiOpcao?.isEnabled = true
         } else if  (rodada == 10 && (btnResposta!!.text == RESPONDER)) {
             colorizaOpcoes()
-            btnResposta?.text = "FINALIZAR"
+            btnResposta?.text = FINALIZAR
             btnResposta?.setOnClickListener {
                 irParaOFinal()
             }

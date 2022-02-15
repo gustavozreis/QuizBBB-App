@@ -58,4 +58,10 @@ class MainActivity : AppCompatActivity() {
         startVideo()
     }
 
+    // Retorna o viewbinding para null
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+
 }

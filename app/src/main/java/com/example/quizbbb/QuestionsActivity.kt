@@ -291,7 +291,7 @@ class QuestionsActivity : AppCompatActivity() {
         if (btnResposta?.text == RESPONDER) {
             for (opcoes in listaOpcoes) {
                 if (opcoes?.text == nomeParaExcluir) {
-                    opcoes.isVisible = false
+                    opcoes.visibility = View.INVISIBLE
 
                     var pontosDaRodada: Int = tvPontosDaPergunta?.text.toString().toInt()
                     pontosDaRodada -= 1
